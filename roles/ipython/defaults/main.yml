@@ -1,0 +1,7 @@
+---
+notebook_password: plop
+notebook_interface: eth0
+
+ipython_pandas: false
+ipython_scipy: false
+ipython_learnkit: false

@@ -1,0 +1,8 @@
+[program:ipython]
+command=/home/ipython/bin/ipython notebook --profile=web
+autostart=true
+autorestart=true
+user=ipython
+directory=/home/ipython/notebooks
+stopsignal= QUIT
+environment=HOME="/home/ipython",SHELL="/bin/bash",USER="ipython",VIRTUAL_ENV="/home/ipython"

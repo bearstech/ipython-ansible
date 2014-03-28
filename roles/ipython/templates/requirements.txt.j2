@@ -1,0 +1,16 @@
+distribute >=0.6.28
+ipython
+dateutils
+pyparsing==2.0.1
+matplotlib
+{% if ipython_scipy %}
+scipy
+{% endif %}
+{% if ipython_pandas %}
+pandas
+{% endif %}
+uwsgi
+pyzmq
+jinja2
+tornado
+pygments
