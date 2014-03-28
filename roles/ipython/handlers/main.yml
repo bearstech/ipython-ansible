@@ -1,3 +1,0 @@
----
-- name: restart ipython
-  supervisorctl: name=ipython state=restarted

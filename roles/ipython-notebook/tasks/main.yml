@@ -27,12 +27,12 @@
   template: src=ipython_notebook_config.py.j2
             dest=/home/ipython/.ipython/profile_web/ipython_notebook_config.py
             owner=ipython
-  notify: restart ipython
+  notify: restart iPython Notebook
 
 - name: supervisor is startd
   service: name=supervisor state=started
 - name: iPython supervisor conf
-  template: src=ipython.supervisord.conf.j2 dest=/etc/supervisor/conf.d/ipython.conf
-  notify: restart ipython
+  template: src=ipython.supervisord.conf.j2 dest=/etc/supervisor/conf.d/ipython-notebook.conf
+  notify: restart iPython Notebook
 - name: reload supervisor
   command: supervisorctl reload
