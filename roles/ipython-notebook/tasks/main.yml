@@ -1,0 +1,38 @@
+---
+- name: Notebook packages
+  apt: pkg={{ item }}
+  with_items:
+      - supervisor
+      - libzmq3-dev
+
+- name:
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name={{ item }}
+  with_items:
+      - uwsgi
+      - pyzmq
+      - jinja2
+      - tornado
+      - pygments
+
+- name: Notebooks password
+  command: /home/ipython/bin/python -c "from IPython.lib import passwd; print passwd('{{ notebook_password }}', algorithm='sha512')"
+  register: notebooks_hash
+
+- name: Notebooks folder
+  file: path=/home/ipython/notebooks state=directory owner=ipython
+
+- name: iPython notebooks config
+  template: src=ipython_notebook_config.py.j2
+            dest=/home/ipython/.ipython/profile_web/ipython_notebook_config.py
+            owner=ipython
+  notify: restart ipython
+
+- name: supervisor is startd
+  service: name=supervisor state=started
+- name: iPython supervisor conf
+  template: src=ipython.supervisord.conf.j2 dest=/etc/supervisor/conf.d/ipython.conf
+  notify: restart ipython
+- name: reload supervisor
+  command: supervisorctl reload

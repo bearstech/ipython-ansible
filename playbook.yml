@@ -4,4 +4,5 @@
 
    roles:
        - ipython
+       - ipython-notebook
        - ipython-nginx
