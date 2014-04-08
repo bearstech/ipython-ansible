@@ -7,17 +7,25 @@ VAGRANTFILE_API_VERSION = "2"
 nodes = [:alice, :bob]
 ip = 51
 
+def guess_public_key()
+  %w"ecdsa rsa dsa".each do |method|
+    path = File.expand_path "~/.ssh/id_#{method}.pub"
+    return IO.read path if File.exist? path
+  end
+  raise "Public key not found."
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |main_config|
+  main_config.hostmanager.enabled = true
+  main_config.hostmanager.manage_host = true
+  main_config.hostmanager.ignore_private_ip = false
+  main_config.hostmanager.include_offline = true
   nodes.each do |node|
     main_config.vm.define node do |config|
       # All Vagrant configuration is done here. The most common configuration
       # options are documented and commented below. For a complete reference,
       # please see the online documentation at vagrantup.com.
-      config.hostmanager.enabled = true
-      config.hostmanager.manage_host = true
-      config.hostmanager.ignore_private_ip = false
-      config.hostmanager.include_offline = true
-      config.hostmanager.aliases = ["#{node}.ipython.local"]
+      config.hostmanager.aliases = [node, "#{node}.ipython.local"]
 
       config.vm.box = "debian-wheezy64-bearstech"
       config.vm.box_url = "http://download.bearstech.com/vagrant-debian-wheezy64-bearstech.box"
@@ -69,7 +77,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |main_config|
       #
       # View the documentation for the provider you're using for more
       # information on available options.
-
+      config.vm.provision :shell, inline:  <<SCRIPT
+mkdir -p /root/.ssh
+echo \"#{guess_public_key}\" >> /root/.ssh/authorized_keys
+SCRIPT
       #config.vm.provision "ansible" do |ansible|
         #ansible.verbose = true
         #ansible.playbook = "playbook.yml"
