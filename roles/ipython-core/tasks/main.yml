@@ -42,5 +42,5 @@
   template: src=ipython_config.py.j2
             dest=/home/ipython/.ipython/profile_web/ipython_config.py
             owner=ipython
-  notify: restart ipython
+  #notify: restart ipython
 
