@@ -23,3 +23,24 @@
        requirements=requirements.txt
        virtualenv=/home/ipython
 
+- name: installing numpy
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=numpy
+
+- name: installing matplotlib
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=matplotlib
+
+- name: installing scipy
+  when: ipython_scipy or ipython_pandas
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=scipy
+- name: installing pandas
+  when: ipython_pandas
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=pandas
+
