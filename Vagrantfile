@@ -85,10 +85,6 @@ then
    sudo apt-get update && sudo apt-get install --quiet --assume-yes python-apt;
 fi
 SCRIPT
-      #config.vm.provision "ansible" do |ansible|
-        #ansible.verbose = true
-        #ansible.playbook = "playbook.yml"
-      #end
     end
   end
 end
