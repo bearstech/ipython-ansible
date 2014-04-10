@@ -1,0 +1,9 @@
+[all]
+alice
+bob
+
+[all:vars]
+
+ipython_scipy    = True
+ipython_pandas   = False
+ipython_learnkit = False
