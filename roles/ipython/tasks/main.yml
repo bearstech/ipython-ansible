@@ -38,15 +38,22 @@
        name=matplotlib
 
 - name: installing scipy
-  when: ipython_scipy or ipython_pandas
+  when: ipython_scipy or ipython_pandas or ipython_learnkit
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=scipy
+
 - name: installing pandas
   when: ipython_pandas
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=pandas
+
+- name: Installing Scikit-Learn
+  when: ipython_learnkit
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=scikit-learn
 
 - name: Installing Numba
   when: ipython_numba
