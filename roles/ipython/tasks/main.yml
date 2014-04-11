@@ -48,3 +48,9 @@
        virtualenv=/home/ipython
        name=pandas
 
+- name: Installing Numba
+  when: ipython_numba
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=numba
+
