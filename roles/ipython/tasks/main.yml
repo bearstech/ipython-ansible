@@ -18,6 +18,10 @@
 - name: ipython requirements
   template: src=requirements.txt.j2 dest=/home/ipython/requirements.txt
 
+- name: Clean build folder
+  file: path=/home/ipython/build
+        state=absent
+
 - name: installing ipython
   pip: chdir=/home/ipython
        requirements=requirements.txt
