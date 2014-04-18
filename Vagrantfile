@@ -80,9 +80,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |main_config|
       config.vm.provision :shell, inline:  <<SCRIPT
 mkdir -p /root/.ssh
 echo \"#{guess_public_key}\" >> /root/.ssh/authorized_keys
+sudo apt-get update
+sudo apt-get upgrade --assume-yes
 if [ ! -d /usr/share/python-apt ]
 then
-   sudo apt-get update && sudo apt-get install --quiet --assume-yes python-apt;
+   sudo apt-get install --quiet --assume-yes python-apt;
 fi
 SCRIPT
     end
