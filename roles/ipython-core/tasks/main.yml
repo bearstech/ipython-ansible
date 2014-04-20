@@ -11,6 +11,8 @@
 
 - name: A user for iPython
   user: name=ipython
+        shell=/bin/bash
+        state=present
 
 - name: iPython needs some packages
   apt: pkg={{ item }}
