@@ -8,3 +8,5 @@ ipython_scipy    = True
 ipython_pandas   = True
 ipython_learnkit = True
 ipython_numba    = True
+ipthon_numexpr   = True
+ipython_theano   = True

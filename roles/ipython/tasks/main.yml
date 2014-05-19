@@ -11,6 +11,7 @@
       # Scipy
       - gfortran
       - libblas-dev
+      - libopenblas-dev
       - liblapack-dev
       - libatlas-dev
   when: ipython_scipy
@@ -38,7 +39,7 @@
        name=matplotlib
 
 - name: installing scipy
-  when: ipython_scipy or ipython_pandas or ipython_learnkit
+  when: ipython_scipy or ipython_pandas or ipython_learnkit or ipython_theano
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=scipy
@@ -61,3 +62,14 @@
        virtualenv=/home/ipython
        name=numba
 
+- name: Installing Theano
+  when: ipython_theano
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=theano
+
+- name: Installing Numexpr
+  when: ipython_numexpr
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=numexpr

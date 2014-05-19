@@ -6,3 +6,5 @@ ipython_pandas: false
 ipython_scipy: false
 ipython_learnkit: false
 ipython_numba: false
+ipython_theano: false
+ipython_numexpr: false
