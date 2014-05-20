@@ -8,6 +8,14 @@ Complete install of iPython with:
 
 With an Nginx frontend.
 
+Test with Vagrant
+-----------------
+
+Install a cute version of Virtualbox and Vagrant.
+
+The hostmanager plugin is needed :
+
+    vagrant plugin install vagrant-hostmanager
 
 Licence
 -------

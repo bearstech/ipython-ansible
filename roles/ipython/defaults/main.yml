@@ -8,3 +8,6 @@ ipython_learnkit: false
 ipython_numba: false
 ipython_theano: false
 ipython_numexpr: false
+ipython_imagesk: false
+ipython_blz: false
+ipython_pymc: false

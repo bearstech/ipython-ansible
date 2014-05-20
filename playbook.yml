@@ -1,8 +1,19 @@
 ---
  - hosts: all
-   sudo: yes
-
    roles:
        - ipython
+
+ - hosts: ipython-notebook
+   roles:
        - ipython-notebook
        - ipython-nginx
+
+ - hosts: ipython-hub
+   tags: hub
+   roles:
+       - ipython-hub
+
+ - hosts: ipython-engine
+   tags: engine
+   roles:
+       - ipython-engine

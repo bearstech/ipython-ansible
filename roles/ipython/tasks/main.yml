@@ -73,3 +73,40 @@
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=numexpr
+
+- name: Installing Scikit-Image
+  when: ipython_imagesk
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name={{ item}}
+  with_items:
+      - cython
+      - pillow
+      - scikit-image
+
+- name: Installing BLZ
+  when: ipython_blz
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=blz
+
+- name: Installing PyMC
+  when: ipython_pymc
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=pymc
+
+# Tables deps
+# libhdf5-dev
+
+# MPI deps
+# openmpi deps
+# libopenmpi-dev
+# openmpi-bin
+
+
+# disco deps
+# git
+# libcmph-dev
+#
+# https://github.com/discoproject/disco/archive/0.5.1.tar.gz

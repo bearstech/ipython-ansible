@@ -46,3 +46,8 @@
             owner=ipython
   #notify: restart ipython
 
+- name: iPython owns its folder
+  file: path=/home/ipython/.ipython
+        owner=ipython
+        recurse=true
+        state=directory

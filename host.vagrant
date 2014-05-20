@@ -2,6 +2,16 @@
 alice
 bob
 
+[ipython-notebook]
+alice
+
+[ipython-hub]
+bob
+
+[ipython-engine]
+alice
+bob
+
 [all:vars]
 
 ipython_scipy    = True
@@ -10,3 +20,10 @@ ipython_learnkit = True
 ipython_numba    = True
 ipthon_numexpr   = True
 ipython_theano   = True
+ipython_imagesk  = True
+
+notebook_password = plop
+notebook_interface = eth1
+
+ipython_controller_interface= eth1
+ipython_controller_key= 9810b914-1ffd-4d7c-a0a9-f127b7cbed92
