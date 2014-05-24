@@ -4,45 +4,146 @@
   with_items:
       - libfreetype6-dev
       - libpng12-dev
-
-- name: Scipy needs some packages
-  apt: pkg={{ item }}
-  with_items:
-      # Scipy
       - gfortran
-      - libblas-dev
-      - libopenblas-dev
-      - liblapack-dev
-      - libatlas-dev
-  when: ipython_scipy
+      - git
+
+- name: OpenBLAS
+  git: version=v0.2.8
+       repo=https://github.com/xianyi/OpenBLAS.git
+       dest=/home/ipython/src/OpenBLAS
+
+- name: make OpenBLAS
+  command: make FC=gfortran
+           chdir=/home/ipython/src/OpenBLAS
+           creates=libopenblas.so
+
+- name: install OpenBLAS
+  command: make PREFIX=/usr/local NO_CBLAS=1 NO_LAPACK=1 install
+           chdir=/home/ipython/src/OpenBLAS
+           creates=/usr/local/lib/libopenblas.so
+
+- name: ldconfig OpenBLAS
+  command: ldconfig
+           chdir=/home/ipython/src/OpenBLAS
+
+- name: CBLAS sources
+  get_url: url=http://www.netlib.org/blas/blast-forum/cblas.tgz
+           dest=/home/ipython/src
+
+- name: Decompress CBLAS
+  command: tar -xvzf cblas.tgz
+           chdir=/home/ipython/src/
+           creates=/home/ipython/src/CBLAS
+
+- name: Configure CBLAS
+  copy: src=CBLAS-Makefile.in
+        dest=/home/ipython/src/CBLAS/Makefile.in
+
+- name: make CBLAS
+  command: make
+           chdir=/home/ipython/src/CBLAS
+           creates=/home/ipython/src/CBLAS/lib/libcblas.a
+
+- name: install CBLAS
+  shell: ar -x libcblas.a && gfortran -lopenblas -shared -o libcblas.so *.o && cp libcblas.* /usr/local/lib/
+         chdir=/home/ipython/src/CBLAS/lib
+         creates=/usr/local/lib/libcblas.o
+
+- name: Lapack source
+  get_url: url=http://www.netlib.org/lapack/lapack-3.5.0.tgz
+           dest=/home/ipython/src
+
+- name: decompress Lapack
+  command: tar -xvzf lapack-3.5.0.tgz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/lapack-3.5.0
+
+- name: config Lapack
+  copy: src=lapack-make.inc
+        dest=/home/ipython/src/lapack-3.5.0/make.inc
+
+- name: make Lapack
+  command: make lapacklib
+           chdir=/home/ipython/src/lapack-3.5.0
+           creates=/home/ipython/src/lapack-3.5.0/liblapack.a
+
+- name: Install Lapack
+  shell: ar -x liblapack.a && gfortran -lopenblas -lcblas -shared -o liblapack.so *.o  && cp liblapack.* /usr/local/lib
+         chdir=/home/ipython/src/lapack-3.5.0
+         creates=/usr/local/lib/liblapack.so
+
+- name: Numpy source
+  get_url: url=https://pypi.python.org/packages/source/n/numpy/numpy-1.8.1.tar.gz
+           dest=/home/ipython/src/
+
+- name: Decompress Numpy
+  command: tar -xvzf numpy-1.8.1.tar.gz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/numpy-1.8.1
+
+- name: Configure Numpy
+  copy: src=numpy-site.cfg
+        dest=/home/ipython/src/numpy-1.8.1/site.cfg
+
+- name: Build Numpy
+  command: /home/ipython/bin/python setup.py build
+           chdir=/home/ipython/src/numpy-1.8.1
+           creates=/home/ipython/src/numpy-1.8.1/build
+
+- name: Install Numpy
+  command: /home/ipython/bin/python setup.py install
+           chdir=/home/ipython/src/numpy-1.8.1
+           creates=/home/ipython/bin/f2py
+
+- name: Scipy source
+  get_url: url=https://pypi.python.org/packages/source/s/scipy/scipy-0.14.0.tar.gz
+           dest=/home/ipython/src/
+
+- name: Decompress Scipy
+  command: tar -xvzf scipy-0.14.0.tar.gz
+           chdir=/home/ipython/src/
+           creates=/home/ipython/src/scipy-0.14.0
+
+- name: Scipy deps
+  apt: pkg=libatlas-base-dev
+
+- name: Cheating with liblapack_atlas
+  file: src={{ item.src }} dest={{ item.dest }} state=link
+  with_items:
+      - src: /usr/lib/atlas-base/atlas/liblapack.a
+        dest: /usr/local/lib/liblapack_atlas.a
+      - src: /usr/lib/atlas-base/atlas/liblapack.so
+        dest: /usr/local/lib/liblapack_atlas.so
+
+- name: Configure Scipy
+  copy: src=scipy-site.cfg
+        dest=/home/ipython/src/scipy-0.14.0/site.cfg
+
+- name: Build Scipy
+  command: /home/ipython/bin/python setup.py build
+           chdir=/home/ipython/src/scipy-0.14.0
+           creates=/home/ipython/src/scipy-0.14.0/build
+
+- name: Install Scipy
+  command: /home/ipython/bin/python setup.py install
+           chdir=/home/ipython/src/scipy-0.14.0
 
 - name: ipython requirements
   template: src=requirements.txt.j2 dest=/home/ipython/requirements.txt
 
-- name: Clean build folder
-  file: path=/home/ipython/build
-        state=absent
+#- name: Clean build folder
+  #file: path=/home/ipython/build
+        #state=absent
 
 - name: installing ipython
   pip: chdir=/home/ipython
        requirements=requirements.txt
        virtualenv=/home/ipython
 
-- name: installing numpy
-  pip: chdir=/home/ipython
-       virtualenv=/home/ipython
-       name=numpy
-
 - name: installing matplotlib
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=matplotlib
-
-- name: installing scipy
-  when: ipython_scipy or ipython_pandas or ipython_learnkit or ipython_theano
-  pip: chdir=/home/ipython
-       virtualenv=/home/ipython
-       name=scipy
 
 - name: installing pandas
   when: ipython_pandas
