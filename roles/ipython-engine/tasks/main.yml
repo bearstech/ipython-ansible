@@ -1,0 +1,33 @@
+---
+- name: engine packages
+  apt: pkg={{ item }}
+  with_items:
+      - supervisor
+      - libzmq3-dev
+
+- name: Python dependencies
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name={{ item }}
+  with_items:
+      - pyzmq
+
+#- name: Wait for the controller
+  #wait_for: host={{ hostvars[groups['ipython-hub'][0]]['ansible_' + ipython_controller_interface ].ipv4.address }}
+          #port={{ ipython_controller_port }}
+          #state=started
+          #timeout=120
+
+- name: engine configuration
+  template: src=ipcontroller-engine.json.j2
+            dest=/home/ipython/.ipython/profile_default/security/ipcontroller-engine.json
+            owner=ipython
+  notify: restart iPython engine
+
+- name: supervisor is startd
+  service: name=supervisor state=started
+- name: iPython engine supervisor conf
+  template: src=ipython-engine.j2 dest=/etc/supervisor/conf.d/ipython-engine.conf
+  notify: restart iPython engine
+- name: reload supervisor
+  command: supervisorctl reload

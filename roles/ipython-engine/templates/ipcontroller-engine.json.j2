@@ -1,0 +1,16 @@
+{
+  "control": 50630,
+  "task": 51855,
+  "hb_ping": 43943,
+  "mux": 50649,
+  "pack": "json",
+  "hb_pong": 54309,
+  "ssh": "",
+  "key": "{{ ipython_controller_key }}",
+  "registration": 52999,
+  "interface": "tcp://{{ hostvars[groups['ipython-hub'][0]]['ansible_' + ipython_controller_interface ].ipv4.address }}",
+  "iopub": 45871,
+  "signature_scheme": "hmac-sha256",
+  "unpack": "json",
+  "location": "{{ hostvars[groups['ipython-hub'][0]]['ansible_' + ipython_controller_interface ].ipv4.address }}"
+}

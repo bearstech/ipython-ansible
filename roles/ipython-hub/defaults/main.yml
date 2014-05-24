@@ -1,0 +1,5 @@
+ipython_controller_scheme: leastload
+ipython_controller_port: 5000
+ipython_controller_interface: eth0
+# please, don't use default key
+ipython_controller_key: 9810b914-1ffd-4d7c-a0a9-f127b7cbed92

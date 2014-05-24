@@ -1,0 +1,3 @@
+---
+- name: restart iPython controller
+  supervisorctl: name=ipython-controller state=restarted

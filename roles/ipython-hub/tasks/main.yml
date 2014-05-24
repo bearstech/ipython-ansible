@@ -1,0 +1,27 @@
+---
+- name: Hub packages
+  apt: pkg={{ item }}
+  with_items:
+      - supervisor
+      - libzmq3-dev
+
+- name: Python dependencies
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name={{ item }}
+  with_items:
+      - pyzmq
+
+# FIXME need a client role
+- name: client configuration
+  template: src=ipcontroller-client.json.j2
+            dest=/home/ipython/.ipython/profile_default/security/ipcontroller-client.json
+            owner=ipython
+
+- name: supervisor is startd
+  service: name=supervisor state=started
+- name: iPython controller supervisor conf
+  template: src=ipython-controller.j2 dest=/etc/supervisor/conf.d/ipython-controller.conf
+  notify: restart iPython controller
+- name: reload supervisor
+  command: supervisorctl reload

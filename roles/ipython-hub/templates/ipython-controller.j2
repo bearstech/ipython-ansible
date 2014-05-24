@@ -1,0 +1,11 @@
+[program:ipython-controller]
+command=/home/ipython/bin/ipcontroller --reuse --sqlitedb --ip={{ ansible_eth1.ipv4.address }}
+autostart=true
+autorestart=true
+user=ipython
+directory=/home/ipython/
+stopsignal= QUIT
+environment=HOME="/home/ipython",SHELL="/bin/bash",USER="ipython",VIRTUAL_ENV="/home/ipython"
+stopwaitsecs=10
+# ipcluster does not propagate the TERM signal to children by default
+stopasgroup=true

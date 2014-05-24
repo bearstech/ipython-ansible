@@ -1,0 +1,12 @@
+[program:ipython-engine]
+command=/home/ipython/bin/ipengine
+autostart=true
+autorestart=true
+user=ipython
+directory=/home/ipython/
+stopsignal= QUIT
+environment=HOME="/home/ipython",SHELL="/bin/bash",USER="ipython",VIRTUAL_ENV="/home/ipython"
+numprocs={{ ansible_processor_count }}
+stopwaitsecs=10
+# ipcluster does not propagate the TERM signal to children by default
+stopasgroup=true

@@ -1,0 +1,16 @@
+{
+  "control": 50814,
+  "task": 44945,
+  "notification": 37080,
+  "task_scheme": "leastload",
+  "mux": 55467,
+  "iopub": 33384,
+  "ssh": "",
+  "key": "{{ ipython_controller_key }}",
+  "registration": 52999,
+  "interface": "tcp://{{ hostvars[groups['ipython-hub'][0]]['ansible_%s' % ipython_controller_interface ].ipv4.address }}",
+  "signature_scheme": "hmac-sha256",
+  "pack": "json",
+  "unpack": "json",
+  "location": "{{ hostvars[groups['ipython-hub'][0]]['ansible_%s' % ipython_controller_interface ].ipv4.address }}"
+}
