@@ -163,17 +163,34 @@
        virtualenv=/home/ipython
        name=numba
 
+- name: Download Numexpr
+  when: ipython_numexpr
+  get_url: url=https://github.com/pydata/numexpr/archive/v2.4.tar.gz
+           dest=/home/ipython/src/numexpr-2.4.tar.gz
+
+- name: Numexpr source
+  when: ipython_numexpr
+  command: tar -xvzf numexpr-2.4.tar.gz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/numexpr-2.4
+
+- name: Numexpr build
+  when: ipython_numexpr
+  command: /home/ipython/bin/python setup.py build
+           chdir=/home/ipython/src/numexpr-2.4
+           creates=/home/ipython/src/numexpr-2.4/build
+
+- name: Numexpr install
+  when: ipython_numexpr
+  command: /home/ipython/bin/python setup.py install
+           chdir=/home/ipython/src/numexpr-2.4
+           creates=/home/ipython/lib/python2.7/site-packages/numexpr-2.4-py2.7
+
 - name: Installing Theano
   when: ipython_theano
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=theano
-
-- name: Installing Numexpr
-  when: ipython_numexpr
-  pip: chdir=/home/ipython
-       virtualenv=/home/ipython
-       name=numexpr
 
 - name: Installing Scikit-Image
   when: ipython_imagesk
