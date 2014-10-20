@@ -50,59 +50,59 @@
          creates=/usr/local/lib/libcblas.o
 
 - name: Lapack source
-  get_url: url=http://www.netlib.org/lapack/lapack-3.5.0.tgz
+  get_url: url=http://www.netlib.org/lapack/lapack-{{ lapack_version }}.tgz
            dest=/home/ipython/src
 
 - name: decompress Lapack
-  command: tar -xvzf lapack-3.5.0.tgz
+  command: tar -xvzf lapack-{{ lapack_version }}.tgz
            chdir=/home/ipython/src
-           creates=/home/ipython/src/lapack-3.5.0
+           creates=/home/ipython/src/lapack-{{ lapack_version }}
 
 - name: config Lapack
   copy: src=lapack-make.inc
-        dest=/home/ipython/src/lapack-3.5.0/make.inc
+        dest=/home/ipython/src/lapack-{{ lapack_version }}/make.inc
 
 - name: make Lapack
   command: make lapacklib
-           chdir=/home/ipython/src/lapack-3.5.0
-           creates=/home/ipython/src/lapack-3.5.0/liblapack.a
+           chdir=/home/ipython/src/lapack-{{ lapack_version }}
+           creates=/home/ipython/src/lapack-{{ lapack_version }}/liblapack.a
 
 - name: Install Lapack
   shell: ar -x liblapack.a && gfortran -lopenblas -lcblas -shared -o liblapack.so *.o  && cp liblapack.* /usr/local/lib
-         chdir=/home/ipython/src/lapack-3.5.0
+         chdir=/home/ipython/src/lapack-{{ lapack_version }}
          creates=/usr/local/lib/liblapack.so
 
 - name: Numpy source
-  get_url: url=https://pypi.python.org/packages/source/n/numpy/numpy-1.8.1.tar.gz
+  get_url: url=https://pypi.python.org/packages/source/n/numpy/numpy-{{ numpy_version }}.tar.gz
            dest=/home/ipython/src/
 
 - name: Decompress Numpy
-  command: tar -xvzf numpy-1.8.1.tar.gz
+  command: tar -xvzf numpy-{{ numpy_version }}.tar.gz
            chdir=/home/ipython/src
-           creates=/home/ipython/src/numpy-1.8.1
+           creates=/home/ipython/src/numpy-{{ numpy_version }}
 
 - name: Configure Numpy
   copy: src=numpy-site.cfg
-        dest=/home/ipython/src/numpy-1.8.1/site.cfg
+        dest=/home/ipython/src/numpy-{{ numpy_version }}/site.cfg
 
 - name: Build Numpy
   command: /home/ipython/bin/python setup.py build
-           chdir=/home/ipython/src/numpy-1.8.1
-           creates=/home/ipython/src/numpy-1.8.1/build
+           chdir=/home/ipython/src/numpy-{{ numpy_version }}
+           creates=/home/ipython/src/numpy-{{ numpy_version }}/build
 
 - name: Install Numpy
   command: /home/ipython/bin/python setup.py install
-           chdir=/home/ipython/src/numpy-1.8.1
+           chdir=/home/ipython/src/numpy-{{ numpy_version }}
            creates=/home/ipython/bin/f2py
 
 - name: Scipy source
-  get_url: url=https://pypi.python.org/packages/source/s/scipy/scipy-0.14.0.tar.gz
+  get_url: url=https://pypi.python.org/packages/source/s/scipy/scipy-{{ scipy_version }}.tar.gz
            dest=/home/ipython/src/
 
 - name: Decompress Scipy
-  command: tar -xvzf scipy-0.14.0.tar.gz
+  command: tar -xvzf scipy-{{ scipy_version }}.tar.gz
            chdir=/home/ipython/src/
-           creates=/home/ipython/src/scipy-0.14.0
+           creates=/home/ipython/src/scipy-{{ scipy_version }}
 
 - name: Scipy deps
   apt: pkg=libatlas-base-dev
@@ -117,16 +117,16 @@
 
 - name: Configure Scipy
   copy: src=scipy-site.cfg
-        dest=/home/ipython/src/scipy-0.14.0/site.cfg
+        dest=/home/ipython/src/scipy-{{ scipy_version }}/site.cfg
 
 - name: Build Scipy
   command: /home/ipython/bin/python setup.py build
-           chdir=/home/ipython/src/scipy-0.14.0
-           creates=/home/ipython/src/scipy-0.14.0/build
+           chdir=/home/ipython/src/scipy-{{ scipy_version }}
+           creates=/home/ipython/src/scipy-{{ scipy_version }}/build
 
 - name: Install Scipy
   command: /home/ipython/bin/python setup.py install
-           chdir=/home/ipython/src/scipy-0.14.0
+           chdir=/home/ipython/src/scipy-{{ scipy_version }}
 
 - name: ipython requirements
   template: src=requirements.txt.j2 dest=/home/ipython/requirements.txt
@@ -150,35 +150,16 @@
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=pandas
+       version="{{ pandas_version }}"
 
 - name: Installing Scikit-Learn
   when: ipython_learnkit
-  pip: chdir=/home/ipython
-       virtualenv=/home/ipython
-       name=scikit-learn
+  pip:  chdir=/home/ipython
+        virtualenv=/home/ipython
+        name=scikit-learn
+        version="{{ sklearn_version }}"
 
-- name: Download LLVM-3.2
-  get_url: url=http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz
-           dest=/home/ipython/src/
-
-- name: LLVM source
-  command: tar -xvzf llvm-3.2.src.tar.gz
-           chdir=/home/ipython/src
-           creates=/home/ipython/src/llvm-3.2.src
-
-- name: config LLVM
-  command: ./configure --enable-optimized --prefix=/usr/local
-           chdir=/home/ipython/src/llvm-3.2.src
-
-- name: build LLVM
-  shell: REQUIRES_RTTI=1 make install
-         chdir=/home/ipython/src/llvm-3.2.src
-         creates=/usr/local/bin/llvm-config
-
-- name: Install llvm-py
-  shell: LLVM_CONFIG_PATH=/usr/local/bin/llvm-config ./bin/pip install llvmpy
-         chdir=/home/ipython
-         creates=lib/python2.7/site-packages/llvmpy-0.10.0-py2.7.egg-info
+- include: llvm.yml
 
 - name: Installing Numba
   when: ipython_numba
@@ -188,28 +169,8 @@
   with_items:
       - numba
 
-- name: Download Numexpr
+- include: numexpr.yml
   when: ipython_numexpr
-  get_url: url=https://github.com/pydata/numexpr/archive/v2.4.tar.gz
-           dest=/home/ipython/src/numexpr-2.4.tar.gz
-
-- name: Numexpr source
-  when: ipython_numexpr
-  command: tar -xvzf numexpr-2.4.tar.gz
-           chdir=/home/ipython/src
-           creates=/home/ipython/src/numexpr-2.4
-
-- name: Numexpr build
-  when: ipython_numexpr
-  command: /home/ipython/bin/python setup.py build
-           chdir=/home/ipython/src/numexpr-2.4
-           creates=/home/ipython/src/numexpr-2.4/build
-
-- name: Numexpr install
-  when: ipython_numexpr
-  command: /home/ipython/bin/python setup.py install
-           chdir=/home/ipython/src/numexpr-2.4
-           creates=/home/ipython/lib/python2.7/site-packages/numexpr-2.4-py2.7
 
 - name: Installing Theano
   when: ipython_theano
@@ -226,6 +187,20 @@
       - cython
       - pillow
       - scikit-image
+
+- name: download Blaze
+  get_url: url=https://github.com/ContinuumIO/blaze/archive/{{ blaze_version }}.tar.gz
+           dest=/home/ipython/src/blaze-{{ blaze_version }}.tar.gz
+
+- name: Blaze source
+  command: tar -cvzf blaze-{{ blaze_version }}.tar.gz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/blaze-{{ blaze_version }}
+
+           # cmake
+           # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local ..
+           #
+           # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPYTHON_PACKAGE_INSTALL_PREFIX=/home/ipython ..
 
 - name: Installing BLZ
   when: ipython_blz

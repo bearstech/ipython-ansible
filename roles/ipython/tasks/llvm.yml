@@ -1,0 +1,24 @@
+---
+
+- name: Download LLVM-3.2
+  get_url: url=http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz
+           dest=/home/ipython/src/
+
+- name: LLVM source
+  command: tar -xvzf llvm-3.2.src.tar.gz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/llvm-3.2.src
+
+- name: config LLVM
+  command: ./configure --enable-optimized --prefix=/usr/local
+           chdir=/home/ipython/src/llvm-3.2.src
+
+- name: build LLVM
+  shell: REQUIRES_RTTI=1 make install
+         chdir=/home/ipython/src/llvm-3.2.src
+         creates=/usr/local/bin/llvm-config
+
+- name: Install llvm-py
+  shell: LLVM_CONFIG_PATH=/usr/local/bin/llvm-config ./bin/pip install llvmpy
+         chdir=/home/ipython
+         creates=lib/python2.7/site-packages/llvmpy-0.10.0-py2.7.egg-info

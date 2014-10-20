@@ -1,0 +1,20 @@
+---
+
+- name: Download Numexpr
+  get_url: url=https://github.com/pydata/numexpr/archive/v{{ numexpr }}.tar.gz
+           dest=/home/ipython/src/numexpr-{{ numexpr }}.tar.gz
+
+- name: Numexpr source
+  command: tar -xvzf numexpr-{{ numexpr }}.tar.gz
+           chdir=/home/ipython/src
+           creates=/home/ipython/src/numexpr-{{ numexpr }}
+
+- name: Numexpr build
+  command: /home/ipython/bin/python setup.py build
+           chdir=/home/ipython/src/numexpr-{{ numexpr }}
+           creates=/home/ipython/src/numexpr-{{ numexpr }}/build
+
+- name: Numexpr install
+  command: /home/ipython/bin/python setup.py install
+           chdir=/home/ipython/src/numexpr-{{ numexpr }}
+           creates=/home/ipython/lib/python2.7/site-packages/numexpr-{{ numexpr }}-py2.7
