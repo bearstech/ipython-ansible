@@ -1,7 +1,8 @@
 ---
  - hosts: all
    roles:
-       - ipython
+       - role: ipython
+         tags: ipython
 
  - hosts: ipython-notebook
    roles:
