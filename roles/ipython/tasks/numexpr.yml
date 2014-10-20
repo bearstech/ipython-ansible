@@ -1,20 +1,20 @@
 ---
 
 - name: Download Numexpr
-  get_url: url=https://github.com/pydata/numexpr/archive/v{{ numexpr }}.tar.gz
-           dest=/home/ipython/src/numexpr-{{ numexpr }}.tar.gz
+  get_url: url=https://github.com/pydata/numexpr/archive/v{{ numexpr_version }}.tar.gz
+           dest=/home/ipython/src/numexpr-{{ numexpr_version }}.tar.gz
 
 - name: Numexpr source
-  command: tar -xvzf numexpr-{{ numexpr }}.tar.gz
+  command: tar -xvzf numexpr-{{ numexpr_version }}.tar.gz
            chdir=/home/ipython/src
-           creates=/home/ipython/src/numexpr-{{ numexpr }}
+           creates=/home/ipython/src/numexpr-{{ numexpr_version }}
 
 - name: Numexpr build
   command: /home/ipython/bin/python setup.py build
-           chdir=/home/ipython/src/numexpr-{{ numexpr }}
-           creates=/home/ipython/src/numexpr-{{ numexpr }}/build
+           chdir=/home/ipython/src/numexpr-{{ numexpr_version }}
+           creates=/home/ipython/src/numexpr-{{ numexpr_version }}/build
 
 - name: Numexpr install
   command: /home/ipython/bin/python setup.py install
-           chdir=/home/ipython/src/numexpr-{{ numexpr }}
-           creates=/home/ipython/lib/python2.7/site-packages/numexpr-{{ numexpr }}-py2.7
+           chdir=/home/ipython/src/numexpr-{{ numexpr_version }}
+           creates=/home/ipython/lib/python2.7/site-packages/numexpr-{{ numexpr_version }}-py2.7
