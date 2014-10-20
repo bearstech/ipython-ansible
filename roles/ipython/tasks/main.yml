@@ -144,6 +144,7 @@
   pip: chdir=/home/ipython
        virtualenv=/home/ipython
        name=matplotlib
+       version="{{ matplotlib_version }}"
 
 - name: installing pandas
   when: ipython_pandas
