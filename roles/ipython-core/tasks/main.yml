@@ -19,6 +19,7 @@
   with_items:
       - python-virtualenv
       - python-dev
+      - sudo
 
 - name: Modern pip
   pip: chdir=/home/ipython
