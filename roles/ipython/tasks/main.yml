@@ -203,6 +203,16 @@
        virtualenv=/home/ipython
        name=.
 
+
+- name: Blosc
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name={{ item}}
+  with_items:
+      - cython
+      - blosk
+      - bcolz
+
            # cmake
            # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local ..
            #
