@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+
+import os
+
+docker_host = os.getenv('DOCKER_HOST')
+f = open('hosts.docker', 'w')
+f.write("""[all]
+%s:2222
+""" % docker_host.split(':')[1][2:])
