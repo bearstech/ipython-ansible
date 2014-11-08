@@ -2,7 +2,7 @@
 
 - name: Download LLVM-3.2
   get_url: url=http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz
-           dest=/home/ipython/src/
+           dest=/home/ipython/src/llvm-3.2.src.tar.gz
 
 - name: LLVM source
   command: tar -xvzf llvm-3.2.src.tar.gz
