@@ -190,13 +190,18 @@
       - scikit-image
 
 - name: download Blaze
-  get_url: url=https://github.com/ContinuumIO/blaze/archive/{{ blaze_version }}.tar.gz
+  get_url: url=https://codeload.github.com/ContinuumIO/blaze/tar.gz/{{ blaze_version }}
            dest=/home/ipython/src/blaze-{{ blaze_version }}.tar.gz
 
 - name: Blaze source
-  command: tar -cvzf blaze-{{ blaze_version }}.tar.gz
+  command: tar -xvzf blaze-{{ blaze_version }}.tar.gz
            chdir=/home/ipython/src
            creates=/home/ipython/src/blaze-{{ blaze_version }}
+
+- name: Blaze install
+  pip: chdir=/home/ipython/src/blaze-{{ blaze_version }}
+       virtualenv=/home/ipython
+       name=.
 
            # cmake
            # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local ..

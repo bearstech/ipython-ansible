@@ -7,7 +7,7 @@ openblas_version:   0.2.8
 lapack_version:     3.5.0
 scipy_version:      0.14.0
 numexpr_version:    2.4
-blaze_version:      0.5.0
+blaze_version:      0.6.5
 pandas_version:     0.15.0
 sklearn_version:    0.15.2
 matplotlib_version: 1.4.1
