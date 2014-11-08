@@ -210,8 +210,9 @@
        name={{ item}}
   with_items:
       - cython
-      - blosk
+      - blosc
       - bcolz
+      - bloscpack
 
            # cmake
            # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local ..
