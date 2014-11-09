@@ -231,6 +231,14 @@
        virtualenv=/home/ipython
        name=pymc
 
+- name: Installing Boost
+  apt: name=libboost-python-dev
+
+- name: Installing annoy
+  pip: chdir=/home/ipython
+       virtualenv=/home/ipython
+       name=annoy
+
 # Tables deps
 # libhdf5-dev
 
