@@ -4,6 +4,22 @@ import os
 
 docker_host = os.getenv('DOCKER_HOST')
 f = open('hosts.docker', 'w')
-f.write("""[all]
-%s:2222
-""" % docker_host.split(':')[1][2:])
+f.write("""
+[all]
+{ip}:2222
+
+[ipython-notebook]
+{ip}:2222
+
+[all:vars]
+
+ipython_scipy    = True
+ipython_pandas   = True
+ipython_learnkit = True
+ipython_numba    = True
+ipthon_numexpr   = True
+ipython_theano   = True
+ipython_imagesk  = True
+
+notebook_password = toto
+""".format(ip=docker_host.split(':')[1][2:]))
