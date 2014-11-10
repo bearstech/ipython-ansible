@@ -1,0 +1,28 @@
+---
+- name: Install Rocksdb requierements
+  apt: name={{ item }}
+  with_items:
+    - build-essential
+    - libsnappy-dev
+    - zlib1g-dev
+    - libbz2-dev
+    - libgflags-dev
+
+- name: Source of Rocksdb
+  git: dest=/home/ipython/src/rocksdb
+       repo=https://github.com/facebook/rocksdb.git
+       version={{ rocksdb_version }}
+# Horrible patch
+- name: I need a make install
+  get_url: url=https://raw.githubusercontent.com/facebook/rocksdb/49aacd8d2b84cf92658983cabe6fc62491c143ba/Makefile
+           dest=/home/ipython/src/rocksdb/
+- name: Make rocksdb
+  shell: make shared_lib && make install && ldconfig
+           chdir=/home/ipython/src/rocksdb
+
+#  CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/home/ipython/src/rocksdb/include LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/ipython/src/rocksdb LIBRARY_PATH=${LIBRARY_PATH}:/home/ipython/src/rocksdb
+- name: Pyrocksdb
+  pip: virtualenv=/home/ipython
+       name=git+git://github.com/stephan-hof/pyrocksdb.git@#egg=pyrocksdb
+       chdir=/home/ipython/src/rocksdb
+

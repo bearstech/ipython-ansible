@@ -239,6 +239,11 @@
        virtualenv=/home/ipython
        name=annoy
 
+- name: Rocksdb
+  include: rocksdb.yml
+  when: ipython_rocksdb
+  tags: db
+
 # Tables deps
 # libhdf5-dev
 

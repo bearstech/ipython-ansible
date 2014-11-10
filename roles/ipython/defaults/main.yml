@@ -11,6 +11,9 @@ blaze_version:      0.6.5
 pandas_version:     0.15.0
 sklearn_version:    0.15.2
 matplotlib_version: 1.4.1
+rocksdb_version:    rocksdb-3.6.2
+pyrocksdb_version:  0.2.1
+
 
 ipython_pandas:   false
 ipython_scipy:    false
@@ -21,3 +24,4 @@ ipython_numexpr:  false
 ipython_imagesk:  false
 ipython_blz:      false
 ipython_pymc:     false
+ipython_rockdb:   false
