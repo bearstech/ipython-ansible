@@ -12,13 +12,7 @@
 
 [all:vars]
 
-ipython_scipy    = True
-ipython_pandas   = True
-ipython_learnkit = True
-ipython_numba    = True
-ipthon_numexpr   = True
-ipython_theano   = True
-ipython_imagesk  = True
+ansible_connection=local
 
 notebook_password = plop
 notebook_interface = eth1
