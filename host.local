@@ -1,0 +1,27 @@
+[all]
+127.0.0.1
+
+[ipython-notebook]
+127.0.0.1
+
+[ipython-hub]
+127.0.0.1
+
+[ipython-engine]
+127.0.0.1
+
+[all:vars]
+
+ipython_scipy    = True
+ipython_pandas   = True
+ipython_learnkit = True
+ipython_numba    = True
+ipthon_numexpr   = True
+ipython_theano   = True
+ipython_imagesk  = True
+
+notebook_password = plop
+notebook_interface = eth1
+
+ipython_controller_interface= eth1
+ipython_controller_key= 9810b914-1ffd-4d7c-a0a9-f127b7cbed92
