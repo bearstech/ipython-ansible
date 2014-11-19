@@ -45,7 +45,7 @@
            creates=/home/ipython/src/CBLAS/lib/libcblas.a
 
 - name: install CBLAS
-  shell: ar -x libcblas.a && gfortran -lopenblas -shared -o libcblas.so *.o && cp libcblas.* /usr/local/lib/
+  shell: ar -x libcblas.a && gfortran -lopenblas -shared -o libcblas.so *.o && cp libcblas.* /usr/local/lib/ && ldconfig
          chdir=/home/ipython/src/CBLAS/lib
          creates=/usr/local/lib/libcblas.o
 
