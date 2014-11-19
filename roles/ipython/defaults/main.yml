@@ -2,7 +2,7 @@
 notebook_password: plop
 notebook_interface: eth0
 
-numpy_version:      1.9.0
+numpy_version:      1.9.1
 openblas_version:   0.2.8
 lapack_version:     3.5.0
 scipy_version:      0.14.0
