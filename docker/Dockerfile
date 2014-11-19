@@ -13,3 +13,5 @@ RUN dpkg -i /tmp/ansible_1.7.2+dfsg-2_all.deb
 VOLUME /playbook
 
 WORKDIR /playbook
+
+CMD /bin/bash
