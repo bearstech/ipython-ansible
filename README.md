@@ -17,6 +17,33 @@ The hostmanager plugin is needed :
 
     vagrant plugin install vagrant-hostmanager
 
+Test wirh Docker
+----------------
+
+Install Docker (and boot2docker if you are not a Linux user).
+
+Prepare your ansible image :
+
+    cd docker
+    docker build -t ansible .
+
+Build you own ipython version :
+
+    ./build_with_docker.sh
+
+Take a pause, enjoy your powerful CPU.
+
+You can tune host.local.
+
+You can now commit your container as an image, 2.5Go of pure math and love.
+
+### Next step
+
+ * Complete automated workflow
+ * Parameters for the image
+ * Howto using it in a cluster
+ * Howto build your own docker with this image
+
 Licence
 -------
 
