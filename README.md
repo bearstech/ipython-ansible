@@ -31,11 +31,11 @@ Build you own ipython version :
 
     ./build_with_docker.sh
 
-Take a pause, enjoy your powerful CPU.
+Take a pause, enjoy your powerful CPUs.
+
+Now, you've got a numpy image, 2.5Go of pure math and love.
 
 You can tune host.local.
-
-You can now commit your container as an image, 2.5Go of pure math and love.
 
 ### Next step
 
